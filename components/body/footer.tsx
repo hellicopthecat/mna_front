@@ -2,15 +2,15 @@ import Link from "next/link";
 
 export default function FooterCont() {
   return (
-    <footer className=" h-16 ">
+    <footer className="flex justify-center items-center h-16 w-full">
       <nav>
         <ul className="flex justify-center items-center">
           <li className=" stroke-blue-500">
             <Link href={"/home"}>
               <svg
                 fill="none"
-                width={50}
-                height={50}
+                width={30}
+                height={30}
                 strokeWidth={1.5}
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
