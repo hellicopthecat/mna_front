@@ -18,16 +18,16 @@ const IS_ME = gql(`
 
 const useUser = () => {
   const {existsUser, logOutUserState} = existsTokenStore();
-  const {data, error} = useQuery<Query>(IS_ME, {skip: !existsUser});
-
+  const {data, error, loading} = useQuery<Query>(IS_ME, {skip: !existsUser});
+  console.log(existsUser);
   useEffect(() => {
     if (existsUser === false) {
       logOutUserState();
       logoutCookie();
     }
-  }, [data, error]);
-  useEffect(() => {}, [existsUser]);
-  return {data};
+  }, [data, error, existsUser, logOutUserState]);
+
+  return {data, error, loading};
 };
 
 export default useUser;
