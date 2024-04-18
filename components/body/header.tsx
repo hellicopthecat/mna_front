@@ -12,7 +12,7 @@ export default function HeaderComp() {
   const title = () => {
     if (path.match("/home")) {
       return "HOME";
-    } else if (path.match(`/user/${data?.seeMyprofile.id}`)) {
+    } else if (path.match(`/user/${data?.seeMyprofile.username}`)) {
       return data?.seeMyprofile.username.toUpperCase();
     }
   };
@@ -20,7 +20,7 @@ export default function HeaderComp() {
     router.back();
   };
   const goUserPage = () => {
-    router.push(`/user/${data?.seeMyprofile.id}`);
+    router.push(`/user/${data?.seeMyprofile.username}`);
   };
 
   return (
