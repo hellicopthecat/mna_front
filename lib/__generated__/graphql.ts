@@ -125,22 +125,35 @@ export type LoginResultResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  cancelRegistWorker: ResultResponse;
   connectCompany: ResultResponse;
   createCompany: ResultResponse;
   createEnL: ResultResponse;
   createInEx: ResultResponse;
   createProduct: ResultResponse;
+  createSalary: ResultResponse;
   createUser: ResultResponse;
+  createVacation: ResultResponse;
   deleteManageAuth: ResultResponse;
+  deleteUser: ResultResponse;
   disconnectCompany: ResultResponse;
   editCompanyAdress: ResultResponse;
   editEnL: ResultResponse;
   editInNout: ResultResponse;
   editProduct: ResultResponse;
+  editSalary: ResultResponse;
   editUser: ResultResponse;
+  editVacation: ResultResponse;
   loginUser: LoginResultResponse;
   managerAuth: ResultResponse;
+  registWorker: ResultResponse;
   updateInEx: ResultResponse;
+};
+
+
+export type MutationCancelRegistWorkerArgs = {
+  companyName: Scalars['String']['input'];
+  username: Scalars['String']['input'];
 };
 
 
@@ -203,11 +216,30 @@ export type MutationCreateProductArgs = {
 };
 
 
+export type MutationCreateSalaryArgs = {
+  annualSalary?: InputMaybe<Scalars['Int']['input']>;
+  beforeTaxMonthlySalary?: InputMaybe<Scalars['Int']['input']>;
+  companyName: Scalars['String']['input'];
+  username: Scalars['String']['input'];
+};
+
+
 export type MutationCreateUserArgs = {
   email: Scalars['String']['input'];
   firstName?: InputMaybe<Scalars['String']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
+  phone?: InputMaybe<Scalars['String']['input']>;
+  username: Scalars['String']['input'];
+};
+
+
+export type MutationCreateVacationArgs = {
+  companyName: Scalars['String']['input'];
+  restVacation?: InputMaybe<Scalars['Int']['input']>;
+  sickLeave?: InputMaybe<Scalars['Int']['input']>;
+  specialVation?: InputMaybe<Scalars['Int']['input']>;
+  totalVacation?: InputMaybe<Scalars['Int']['input']>;
   username: Scalars['String']['input'];
 };
 
@@ -215,6 +247,11 @@ export type MutationCreateUserArgs = {
 export type MutationDeleteManageAuthArgs = {
   companyName: Scalars['String']['input'];
   username: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteUserArgs = {
+  password: Scalars['String']['input'];
 };
 
 
@@ -267,11 +304,30 @@ export type MutationEditProductArgs = {
 };
 
 
+export type MutationEditSalaryArgs = {
+  annualSalary?: InputMaybe<Scalars['Int']['input']>;
+  beforeTaxMonthlySalary?: InputMaybe<Scalars['Int']['input']>;
+  companyName: Scalars['String']['input'];
+  username: Scalars['String']['input'];
+};
+
+
 export type MutationEditUserArgs = {
   avatar?: InputMaybe<Scalars['String']['input']>;
   firstName?: InputMaybe<Scalars['String']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationEditVacationArgs = {
+  companyName: Scalars['String']['input'];
+  restVacation?: InputMaybe<Scalars['Int']['input']>;
+  sickLeave?: InputMaybe<Scalars['Int']['input']>;
+  specialVation?: InputMaybe<Scalars['Int']['input']>;
+  totalVacation?: InputMaybe<Scalars['Int']['input']>;
+  username: Scalars['String']['input'];
 };
 
 
@@ -283,6 +339,12 @@ export type MutationLoginUserArgs = {
 
 
 export type MutationManagerAuthArgs = {
+  companyName: Scalars['String']['input'];
+  username: Scalars['String']['input'];
+};
+
+
+export type MutationRegistWorkerArgs = {
   companyName: Scalars['String']['input'];
   username: Scalars['String']['input'];
 };
@@ -364,6 +426,18 @@ export type ResultResponse = {
   ok: Scalars['Boolean']['output'];
 };
 
+export type Salary = {
+  __typename?: 'Salary';
+  afterTaxMonthlySalary?: Maybe<Scalars['Int']['output']>;
+  annualSalary?: Maybe<Scalars['Int']['output']>;
+  beforeTaxMonthlySalary?: Maybe<Scalars['Int']['output']>;
+  company: Company;
+  createdAt: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  updateAt: Scalars['String']['output'];
+  user: User;
+};
+
 export enum TPaymentSwitch {
   Nonpaid = 'NONPAID',
   Paid = 'PAID',
@@ -382,8 +456,23 @@ export type User = {
   manageCompany?: Maybe<Array<Maybe<Company>>>;
   manageCompanyCount: Scalars['Int']['output'];
   ownCompany?: Maybe<Array<Maybe<Company>>>;
+  phone?: Maybe<Scalars['String']['output']>;
+  salary?: Maybe<Array<Maybe<Salary>>>;
   updateAt: Scalars['String']['output'];
   username: Scalars['String']['output'];
+  vacation?: Maybe<Array<Maybe<Vacation>>>;
+};
+
+export type Vacation = {
+  __typename?: 'Vacation';
+  createdAt: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  restVacation?: Maybe<Scalars['Int']['output']>;
+  sickLeave?: Maybe<Scalars['Int']['output']>;
+  specialVation?: Maybe<Scalars['Int']['output']>;
+  totalVacation?: Maybe<Scalars['Int']['output']>;
+  updateAt: Scalars['String']['output'];
+  user: User;
 };
 
 export type Own_Company_FragmentFragment = { __typename?: 'Company', id: string, createdAt: string, updateAt: string, companyLogo?: string | null, companyName: string, isManager: boolean, isOwned: boolean, connectingCompanyCount: number, connectedCompanyCount: number, companyOwner: { __typename?: 'User', id: string, createdAt: string, updateAt: string, username: string, avatar?: string | null, email: string, firstName?: string | null, lastName?: string | null }, companyAdress?: { __typename?: 'CompanyAdress', id: string, createdAt: string, updateAt: string, country?: string | null, city?: string | null, streetAdress?: string | null, restAdress?: string | null, adressNum?: string | null } | null, companyManager: Array<{ __typename?: 'User', id: string, createdAt: string, updateAt: string, username: string, email: string, firstName?: string | null, lastName?: string | null, avatar?: string | null } | null>, connectingCompany?: Array<{ __typename?: 'Company', companyName: string, companyLogo?: string | null, id: string, updateAt: string, createdAt: string } | null> | null, connectedCompany?: Array<{ __typename?: 'Company', companyName: string, companyLogo?: string | null, id: string, updateAt: string, createdAt: string } | null> | null, companyProduct?: Array<{ __typename?: 'Product', id: number, itemName: string, itemPhoto?: string | null, itemProductId: string, itemModelName?: string | null, itemCount?: number | null, createdAt: string, updateAt: string } | null> | null, companyInNout: { __typename?: 'InNout', id: number, updateAt: string, createdAt: string, totalAssets: number, expendMoney?: number | null, incomeMoney?: number | null, expendModel?: Array<{ __typename?: 'IncomeExpend', id: number, createdAt: string, updateAt: string, incomeTrue: boolean, infoSubtitle: string, money: number, paymentType?: string | null, paymentsDone: TPaymentSwitch } | null> | null, incomeModel?: Array<{ __typename?: 'IncomeExpend', id: number, createdAt: string, updateAt: string, incomeTrue: boolean, infoSubtitle: string, money: number, paymentType?: string | null, paymentsDone: TPaymentSwitch } | null> | null } } & { ' $fragmentName'?: 'Own_Company_FragmentFragment' };
