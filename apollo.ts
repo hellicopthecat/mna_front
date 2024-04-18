@@ -1,4 +1,4 @@
-import {ApolloLink, HttpLink, makeVar} from "@apollo/client";
+import {ApolloLink, HttpLink} from "@apollo/client";
 import {setContext} from "@apollo/client/link/context";
 import {
   NextSSRApolloClient,
