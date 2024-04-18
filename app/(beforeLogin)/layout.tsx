@@ -1,8 +1,18 @@
-export default function beforeLoginLayout({
+"use client";
+import {getCookie} from "cookies-next";
+import {useEffect} from "react";
+
+export default function BeforeLoginLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const cookieToken = getCookie("TOKEN");
+  useEffect(() => {
+    if (!cookieToken) {
+      sessionStorage.clear();
+    }
+  }, [cookieToken]);
   return (
     <main className="flex justify-center items-center min-h-dvh">
       <div className="flex flex-col p-10 gap-3 bg-slate-100 border-2 rounded-md shadow-lg">
