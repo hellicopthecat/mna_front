@@ -5,6 +5,7 @@ import {DocumentNode, TypedDocumentNode, gql, useQuery} from "@apollo/client";
 import CompanyCard from "./_components/CompanyCard";
 import {Suspense} from "react";
 import Link from "next/link";
+import Container from "@/components/body/container";
 
 const MAIN_PAGE_MY_DATA = gql`
   query Query {
@@ -44,10 +45,10 @@ export default function Home() {
     return <div>{error.message}</div>;
   }
   return (
-    <div className="flex flex-col h-full p-5 gap-5">
+    <Container>
       <div className="flex items-end gap-3">
         <p className="font-bold text-xl">반갑습니다.</p>
-        <Link href={`/user/${isMe?.id}`}>
+        <Link href={`/user/${isMe?.username}`}>
           <p className="font-semibold">{isMe?.username}님</p>
         </Link>
       </div>
@@ -58,7 +59,7 @@ export default function Home() {
             <p className=" font-semibold mb-1">
               {isMe?.hasCompanyCount}개의 회사를 보유하고 계십니다..
             </p>
-            <div className=" grid grid-cols-3 overflow-y-scroll">
+            <div className=" flex overflow-x-scroll pb-2">
               {isMe?.ownCompany?.map((company) =>
                 company ? (
                   <CompanyCard key={company?.id} company={company} />
@@ -75,7 +76,7 @@ export default function Home() {
             <p className=" font-semibold mb-1">
               {isMe?.manageCompanyCount}개의 회사를 관리하고 계십니다..
             </p>
-            <div className=" grid grid-cols-3 overflow-y-scroll">
+            <div className=" flex overflow-x-scroll pb-2">
               {isMe?.manageCompany?.map((company) =>
                 company ? (
                   <CompanyCard key={company?.id} company={company} />
@@ -85,6 +86,6 @@ export default function Home() {
           </div>
         </Suspense>
       </div>
-    </div>
+    </Container>
   );
 }
