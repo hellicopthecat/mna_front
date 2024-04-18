@@ -11,14 +11,15 @@ export default function AfterLoginLayout({
   modal: React.ReactNode;
 }) {
   const {data, loading} = useUser();
-  return data ? (
-    <div className="flex flex-col h-dvh justify-between relative">
-      <HeaderComp />
-      <div className="flex-1">{children}</div>
-      {modal}
-      <FooterCont />
-    </div>
-  ) : (
-    <div>로그아웃되셨습니다.</div>
+
+  return (
+    data && (
+      <div className="flex flex-col h-dvh justify-between relative">
+        <HeaderComp />
+        <div className="flex-1">{children}</div>
+        {modal}
+        <FooterCont />
+      </div>
+    )
   );
 }
