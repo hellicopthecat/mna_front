@@ -1,25 +1,22 @@
-"use client";
 import FooterCont from "@/components/body/footer";
 import HeaderComp from "@/components/body/header";
-import useUser from "@/hooks/useUser";
+import isMe from "@/lib/isMe";
 
-export default function AfterLoginLayout({
+export default async function AfterLoginLayout({
   children,
   modal,
 }: {
   children: React.ReactNode;
   modal: React.ReactNode;
 }) {
-  const {data, loading} = useUser();
-
+  const {data} = await isMe();
+  const {username} = data.seeMyprofile;
   return (
-    data && (
-      <div className="flex flex-col h-dvh justify-between relative">
-        <HeaderComp />
-        <div className="flex-1">{children}</div>
-        {modal}
-        <FooterCont />
-      </div>
-    )
+    <div className="flex flex-col h-dvh justify-between relative">
+      <HeaderComp username={username} />
+      <div className="flex-1">{children}</div>
+      {modal}
+      <FooterCont />
+    </div>
   );
 }

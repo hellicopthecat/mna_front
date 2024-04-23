@@ -1,88 +1,62 @@
-"use client";
 import Container from "@/components/body/container";
-import HorizontalSeperator from "@/components/horizonSeperator";
-import {Query} from "@/lib/__generated__/graphql";
-import {DocumentNode, TypedDocumentNode, gql, useQuery} from "@apollo/client";
 import Link from "next/link";
 import {
   UserInfoContainer,
   UserInfoInnerText,
   UserInfoTitleText,
 } from "./_components/userInfoContainer";
+import {Suspense} from "react";
+import isMe, {myProfileCache} from "@/lib/isMe";
+import {revalidatePath, revalidateTag} from "next/cache";
 
-const SEE_MY_PROFILE_QUERY = gql`
-  query SeeMyprofile {
-    seeMyprofile {
-      id
-      createdAt
-      updateAt
-      username
-      email
-      phone
-      firstName
-      lastName
-      avatar
-    }
+export default async function UserPage() {
+  const {
+    data: {seeMyprofile},
+    loading,
+  } = await myProfileCache();
+
+  const {username, firstName, lastName, email, phone} = seeMyprofile;
+  const revalidateBtn = async () => {
+    "use server";
+    revalidateTag("isMyCache");
+  };
+
+  if (loading) {
+    return <div>loading</div>;
   }
-` as DocumentNode | TypedDocumentNode<Query>;
 
-export default function UserPage() {
-  const {data, error} = useQuery(SEE_MY_PROFILE_QUERY);
   return (
     <Container>
+      <form action={revalidateBtn}>
+        <button type="submit">revalidate</button>
+      </form>
       <UserInfoContainer>
         <div className="w-5 h-5 bg-blue-500 rounded-full" />
-        <UserInfoInnerText
-          username
-          text={
-            data?.seeMyprofile.username
-              ? data?.seeMyprofile.username
-              : "전화번호를 입력해주세요."
-          }
-        />
+        <Suspense fallback={<div>loading</div>}>
+          <UserInfoInnerText username text={username + ""} />
+        </Suspense>
       </UserInfoContainer>
-
+      <UserInfoContainer>
+        <UserInfoTitleText text="이름(성)" />
+        <UserInfoInnerText text={firstName ?? "이름(성)"} />
+      </UserInfoContainer>
+      <UserInfoContainer>
+        <UserInfoTitleText text="이름" />
+        <UserInfoInnerText text={lastName ?? "이름"} />
+      </UserInfoContainer>
       <UserInfoContainer>
         <UserInfoTitleText text="E-mail" />
-        <UserInfoInnerText
-          text={
-            data?.seeMyprofile.email
-              ? data?.seeMyprofile.email
-              : "프로필을 입력해주세요."
-          }
-        />
+        <UserInfoInnerText text={email ?? "이메일을 입력해주세요"} />
       </UserInfoContainer>
 
       <UserInfoContainer>
         <UserInfoTitleText text="휴대전화" />
-        <UserInfoInnerText
-          text={
-            data?.seeMyprofile.phone
-              ? data?.seeMyprofile.phone
-              : "프로필을 입력해주세요."
-          }
-        />
-      </UserInfoContainer>
-
-      <UserInfoContainer>
-        <UserInfoTitleText text="이름" />
-        <div className="flex gap-1">
-          <UserInfoInnerText
-            text={
-              data?.seeMyprofile.firstName ? data?.seeMyprofile.firstName : "성"
-            }
-          />
-          <UserInfoInnerText
-            text={
-              data?.seeMyprofile.lastName ? data?.seeMyprofile.lastName : "이름"
-            }
-          />
-        </div>
+        <UserInfoInnerText text={phone ?? "전화번호를 입력해주세요."} />
       </UserInfoContainer>
 
       <div className="flex flex-col items-center gap-3">
         <Link
-          href={`/user/${data?.seeMyprofile.username}/edit`}
+          href={`/user/${username}/edit`}
           className="bg-blue-500 text-center w-36 p-2 rounded-md shadow-md text-white"
         >
           회원정보 변경하기

@@ -10,7 +10,7 @@
     @apply text-slate-400 p-1 px-4 cursor-pointer;
   }
   .btn_theme {
-    @apply w-full bg-slate-50 shadow-md rounded-xl py-2 text-center;
+    @apply w-full bg-blue-500 shadow-md rounded-xl py-2 text-center text-white;
   }
   .badge {
     @apply px-2 rounded-xl text-sm;

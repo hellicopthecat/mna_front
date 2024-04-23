@@ -6,8 +6,8 @@ interface IBeforLoginRouter {
 }
 const beforeLogin: IBeforLoginRouter = {
   "/": true,
-  login: true,
-  join: true,
+  "/login": true,
+  "/join": true,
 };
 export const middleware = (request: NextRequest) => {
   const cookie = cookies();
